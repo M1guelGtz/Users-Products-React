@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { useProductModel } from '../Model/viewProductsModel';
 //import { useAddProductModel } from '../Model/addProductModel';
 export default function CreateProduct(props) {
     //const addProduct =useAddProductModel();
-    const {addProduct} = useProductModel();
+    //const {addProduct} = useProductModel();
     const handleChange = (e) => {
         setNewProduct({ ...newProduct, [e.target.name]: e.target.value });
     };
@@ -13,7 +12,7 @@ export default function CreateProduct(props) {
             precio: parseInt(newProduct.precio),
             cantidad: parseInt(newProduct.cantidad),
         }
-        addProduct(product);
+        props.addProduct(product);
         console.log(product);
         setNewProduct({ nombre: "", precio: "", cantidad: "" });
         props.setIsModalOpen(false);

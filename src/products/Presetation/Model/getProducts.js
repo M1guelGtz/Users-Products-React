@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { ProductUseCase } from "../../Domain/ProductUseCase";
-export const useProductModel = () => {
+export const useviewProductModel = () => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
 

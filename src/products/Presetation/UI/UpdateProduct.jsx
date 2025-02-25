@@ -1,10 +1,10 @@
 import { useState } from "react";
 //import { useEditProductModel } from "../Model/editProductModel";
-import { useProductModel } from "../Model/viewProductsModel";
 
 export default function UpdateProduct(props) {
     const [newProduct, setNewProduct] = useState({});
-    const editProduct = useProductModel();
+    
+    //const editProduct = useProductModel();
     //const editProduct = useEditProductModel();
     const handleChange = (e) => {
         setNewProduct({ ...newProduct, [e.target.name]: e.target.value });
@@ -15,7 +15,8 @@ export default function UpdateProduct(props) {
             precio: parseInt(newProduct.precio),
             cantidad: parseInt(newProduct.cantidad),
         }
-        editProduct(product, props.id);
+        console.log(props.editProduct)
+        props.editProduct(product, props.id);
         console.log(product, props.id);
         setNewProduct({});
         props.setIsModalOpen(false);

@@ -1,13 +1,11 @@
-import { useState } from 'react'
-import './App.css'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import './App.css';
+import ViewUsers from './users/Presetation/UI/ViewUsers';
 function App() {
 
   return (
     <ProductProvider>
-        {/* Toda la app ahora comparte el mismo estado de productos */}
         <Products />
+        <ViewUsers/>
     </ProductProvider>
 );
 }
