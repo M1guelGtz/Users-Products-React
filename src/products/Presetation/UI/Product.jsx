@@ -1,55 +1,49 @@
-// src/Presentation/UI/Products.js
 import { useState } from "react";
-//import { useDeleteProductModel } from "../Model/deleteModel.js";
 import { useProductModel } from "../Model/viewProductsModel.js";
 import CreateProduct from "./CreateProduct.jsx";
+import RealTimeChart from "./Grafica.jsx";
 import UpdateProduct from "./UpdateProduct.jsx";
 
 const Products = () => {
-  const { products, loading, deleteProduct, editProduct, addProduct } = useProductModel();
-  console.log("edeit product en product.jsx", editProduct)
+  const { products, data, interval, loading, deleteProduct, editProduct, addProduct } = useProductModel();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const deleteProductById = (id) => {
-    deleteProduct(id);
-  };
+  
+  
+  const deleteProductById = (id) => deleteProduct(id);
   const openEditModal = (product) => {
-    setSelectedProduct(product); 
+    setSelectedProduct(product);
     setIsModalEditOpen(true);
   };
-  if (loading)
-    return <p className="text-center text-xl text-gray-600">Cargando productos...</p>;
+
+  if (loading) {
+    return <p className="text-center text-xl text-gray-400">Cargando productos...</p>;
+  }
 
   return (
-    <div className="max-w-4xl mx-auto p-6 rounded-lg">
-      <h1 className="text-2xl font-bold text-gray-800 mb-4 text-center">
-        Lista de Productos
-      </h1>
-      <div className="w-full  flex justify-between ">
+    <div className="max-w-5xl mx-auto p-6 bg-gray-900 shadow-lg rounded-lg text-gray-300">
+      <h1 className="text-3xl font-bold text-white text-center mb-6">Lista de Productos</h1>
 
-      <button
-        className="mb-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-        onClick={() => setIsModalOpen(true)}
-      >
-        Agregar Producto
-      </button>
-      <button
-        className="mb-4 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition"
+      <div className="flex justify-between mb-4">
+        <button
+          className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+          onClick={() => setIsModalOpen(true)}
+        >
+          Agregar Producto
+        </button>
         
-      >
-        Cerrar sesion
-      </button>
       </div>
 
+      {/* Modales */}
       {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/70 bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-md">
           <CreateProduct addProduct={addProduct} setIsModalOpen={setIsModalOpen} />
         </div>
       )}
 
       {isModalEditOpen && selectedProduct && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/70 bg-opacity-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-md">
           <UpdateProduct
             editProduct={editProduct}
             id={selectedProduct.id}
@@ -57,25 +51,27 @@ const Products = () => {
           />
         </div>
       )}
+
+      {/* Tabla de Productos */}
       <div className="overflow-x-auto">
-        <table className="w-full border-collapse border border-gray-300 rounded-lg">
+        <table className="w-full border-collapse rounded-lg shadow-md border border-gray-700">
           <thead>
-            <tr className="bg-gray-100">
-              <th className="border p-2 text-left">Nombre</th>
-              <th className="border p-2 text-left">Precio</th>
-              <th className="border p-2 text-left">Cantidad</th>
-              <th className="border p-2 text-center">Acciones</th>
+            <tr className="bg-gray-800 text-white">
+              <th className="p-3 text-left border-b border-gray-700">Nombre</th>
+              <th className="p-3 text-left border-b border-gray-700">Precio</th>
+              <th className="p-3 text-left border-b border-gray-700">Cantidad</th>
+              <th className="p-3 text-center border-b border-gray-700">Acciones</th>
             </tr>
           </thead>
           <tbody>
             {products.map((product) => (
-              <tr key={product.id} className="hover:bg-gray-50">
-                <td className="border p-2">{product.nombre}</td>
-                <td className="border p-2">${product.precio}</td>
-                <td className="border p-2">{product.cantidad}</td>
-                <td className="border p-2 flex justify-center space-x-2">
+              <tr key={product.id} className="hover:bg-gray-800">
+                <td className="p-3 border-b border-gray-700">{product.nombre}</td>
+                <td className="p-3 border-b border-gray-700">${product.precio}</td>
+                <td className="p-3 border-b border-gray-700">{product.cantidad}</td>
+                <td className="p-3 flex justify-center space-x-2 border-b border-gray-700">
                   <button
-                    className="px-3 py-1 bg-gray-500 text-white rounded-md hover:bg-gray-600 transition"
+                    className="px-3 py-1 bg-gray-600 text-white rounded-md hover:bg-gray-500 transition"
                     onClick={() => openEditModal(product)}
                   >
                     Editar
@@ -91,6 +87,18 @@ const Products = () => {
             ))}
           </tbody>
         </table>
+        {products.length === 0 && (
+          <p className="text-center text-gray-500 mt-4">No hay productos disponibles.</p>
+        )}
+      </div>
+      <div className="w-full flex justify-center flex-col">
+        {
+          /*
+          <RealTimeChart name="Presion_Arterial" color="#3b82f6" data={data} interval={interval}  />
+          <RealTimeChart name="Ritmo_Cardiaco" color="#f59e0b" data={data} interval={interval}  />
+          <RealTimeChart name="Cantidad_De_Pasos" color="#10b981" data={data} interval={interval}  />
+          */ 
+        }
       </div>
     </div>
   );

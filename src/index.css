@@ -1,1 +1,37 @@
 @import "tailwindcss";
+/* Añadir la animación personalizada para los bordes */
+/* Añadir la animación personalizada para los bordes */
+@keyframes borderAnimation {
+    0% {
+      border-image: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #00ff7f, #007fff, #8a00ff, #ff00ab);
+      border-image-slice: 1;
+    }
+    50% {
+      border-image: linear-gradient(45deg, #fffb00, #00ff7f, #007fff, #8a00ff, #ff00ab, #ff0000, #ff7300);
+      border-image-slice: 1;
+    }
+    100% {
+      border-image: linear-gradient(45deg, #00ff7f, #007fff, #8a00ff, #ff00ab, #ff0000, #ff7300, #fffb00);
+      border-image-slice: 1;
+    }
+  }
+  
+  /* Solo aplicar animación cuando el input está enfocado */
+  input:focus {
+    border: 1px solid transparent;
+    border-radius: 5px;
+    background-clip: padding-box;
+    animation: borderAnimation 2s infinite linear;
+  }
+  
+  input {
+    border: 1px solid transparent;
+    border-radius: 5px;
+    background-clip: padding-box;
+    transition: border-color 0.3s ease-in-out;
+  }
+  
+  input:focus {
+    outline: none;
+  }
+  
