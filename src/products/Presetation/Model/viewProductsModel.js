@@ -11,7 +11,7 @@ export const useProductModel = () => {
     fetchProducts();
   }, []);
 
-  const interval = setInterval(() => {
+  /*const interval = setInterval(() => {
     setData((prevData) => {
       const newData = [
         ...prevData,
@@ -25,7 +25,7 @@ export const useProductModel = () => {
       return newData.length > 10 ? newData.slice(1) : newData;
     });
     fetchProducts();
-  }, 30000);
+  }, 30000);*/
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
