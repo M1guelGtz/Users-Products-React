@@ -2,36 +2,46 @@ import { useCallback, useEffect, useState } from "react";
 import { ProductUseCase } from "../../Domain/ProductUseCase";
 
 export const useProductModel = () => {
-  const [data, setData] = useState([]);
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [productToEdit, setProductToEdit] = useState(null);
+  const [wsMessage, setWsMessage] = useState(null); // Nuevo estado para el mensaje WebSocket
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado para manejar la visibilidad del modal
 
   useEffect(() => {
     fetchProducts();
+
+    // Establecer la conexión WebSocket cuando se monte el componente
+    const ws = new WebSocket("ws://localhost:3500/web_socket"); // URL de WebSocket de tu backend
+    ws.onopen = () => {
+      console.log("Conexión WebSocket establecida");
+    };
+
+    ws.onmessage = (event) => {
+      console.log("Mensaje WebSocket recibido:", event.data);
+      setWsMessage(event.data); // Actualizar el estado con el mensaje recibido
+      setIsModalOpen(true); // Abrir el modal cuando se recibe un mensaje
+    };
+
+    ws.onerror = (error) => {
+      console.log("Error en WebSocket:", error);
+    };
+
+    ws.onclose = () => {
+      console.log("Conexión WebSocket cerrada");
+    };
+
+    return () => {
+      ws.close();
+    };
   }, []);
 
-  /*const interval = setInterval(() => {
-    setData((prevData) => {
-      const newData = [
-        ...prevData,
-        {
-          time: new Date().toLocaleTimeString(),
-          Presion_Arterial: Math.random() * 100,
-          Ritmo_Cardiaco: Math.random() * 100,
-          Cantidad_De_Pasos: Math.random() * 100,
-        },
-      ];
-      return newData.length > 10 ? newData.slice(1) : newData;
-    });
-    fetchProducts();
-  }, 30000);*/
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
       const data = await ProductUseCase.getProducts();
-      console.log("Data:", data.products);
       setProducts(data.products);
+      console.log(data);
     } catch (error) {
       console.error("Error al obtener productos:", error);
     } finally {
@@ -59,6 +69,10 @@ export const useProductModel = () => {
     setProductToEdit(product);
   };
 
+  const closeModal = () => {
+    setIsModalOpen(false); // Función para cerrar el modal
+  };
+
   return {
     products,
     loading,
@@ -68,7 +82,8 @@ export const useProductModel = () => {
     addProduct,
     loadProductToEdit,
     productToEdit,
-    data,
-    interval
+    wsMessage, // Agregar este estado para los mensajes WebSocket
+    isModalOpen, // Estado para controlar el modal
+    closeModal, // Función para cerrar el modal
   };
 };

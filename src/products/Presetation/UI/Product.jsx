@@ -1,21 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useProductModel } from "../Model/viewProductsModel.js";
 import CreateProduct from "./CreateProduct.jsx";
-import RealTimeChart from "./Grafica.jsx";
 import UpdateProduct from "./UpdateProduct.jsx";
 
 const Products = () => {
-  const { products, data, interval, loading, deleteProduct, editProduct, addProduct } = useProductModel();
+  const { products, loading, deleteProduct, editProduct, addProduct, productToEdit, loadProductToEdit, wsMessage } = useProductModel();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
-  
-  
+  const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false); // Nuevo estado para la notificación modal
+
   const deleteProductById = (id) => deleteProduct(id);
   const openEditModal = (product) => {
     setSelectedProduct(product);
     setIsModalEditOpen(true);
   };
+
+  const handleNotificationClose = () => {
+    setIsNotificationModalOpen(false);
+  };
+
+  // Mostrar el modal de notificación si hay un mensaje WebSocket
+  useEffect(() => {
+    if (wsMessage) {
+      setIsNotificationModalOpen(true); // Abrir modal cuando hay un mensaje
+    }
+  }, [wsMessage]);
 
   if (loading) {
     return <p className="text-center text-xl text-gray-400">Cargando productos...</p>;
@@ -32,7 +42,6 @@ const Products = () => {
         >
           Agregar Producto
         </button>
-        
       </div>
 
       {/* Modales */}
@@ -48,11 +57,28 @@ const Products = () => {
             editProduct={editProduct}
             id={selectedProduct.id}
             setIsModalOpen={setIsModalEditOpen}
+            productToEdit={productToEdit}
+            loadProductToEdit={loadProductToEdit}
           />
         </div>
       )}
 
-      {/* Tabla de Productos */}
+      {/* Modal de notificación de WebSocket */}
+      {isNotificationModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-md">
+          <div className="bg-black/65 p-6 rounded-lg shadow-lg text-center">
+            <h3 className="text-lg font-semibold mb-4">Notificación</h3>
+            <p>{wsMessage}</p>
+            <button
+              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+              onClick={handleNotificationClose}
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="overflow-x-auto">
         <table className="w-full border-collapse rounded-lg shadow-md border border-gray-700">
           <thead>
@@ -90,15 +116,6 @@ const Products = () => {
         {products.length === 0 && (
           <p className="text-center text-gray-500 mt-4">No hay productos disponibles.</p>
         )}
-      </div>
-      <div className="w-full flex justify-center flex-col">
-        {
-          /*
-          <RealTimeChart name="Presion_Arterial" color="#3b82f6" data={data} interval={interval}  />
-          <RealTimeChart name="Ritmo_Cardiaco" color="#f59e0b" data={data} interval={interval}  />
-          <RealTimeChart name="Cantidad_De_Pasos" color="#10b981" data={data} interval={interval}  />
-          */ 
-        }
       </div>
     </div>
   );

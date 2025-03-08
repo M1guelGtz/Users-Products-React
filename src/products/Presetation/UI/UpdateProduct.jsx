@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
-import { useProductModel } from "../Model/viewProductsModel"; // Importamos el ViewModel
 
-export default function UpdateProduct({ id, setIsModalOpen }) {
-  const { loadProductToEdit, productToEdit, editProduct } = useProductModel();
+export default function UpdateProduct({ id, setIsModalOpen, editProduct, productToEdit, loadProductToEdit }) {
   const [updatedProduct, setUpdatedProduct] = useState({
     nombre: "",
     precio: "",
