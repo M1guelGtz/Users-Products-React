@@ -11,8 +11,8 @@ const App = () => {
     <Router>
       <div className="bg-gray-900 min-h-screen text-gray-300 p-6">
         <nav className="flex justify-center space-x-6 mb-6">
-          <a href="/productos" className="text-blue-400 hover:text-blue-300">Productos</a>
-          <a href="/usuarios" className="text-blue-400 hover:text-blue-300">Usuarios</a>
+          <a href="/productos" className="text-blue-400 hover:text-blue-300"></a>
+          <a href="/usuarios" className="text-blue-400 hover:text-blue-300"></a>
         </nav>
         <Routes>
           

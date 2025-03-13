@@ -1,6 +1,6 @@
 import { IProductDataSource } from "../DataSource/Interface/IProductDataSource";
 
-const API_URL = "http://localhost:3000/products/";
+const API_URL = "http://18.208.8.74:3000/products/";
 
 export class ProductRepository extends IProductDataSource {
     async getAll() {

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useProductModel } from "../Model/viewProductsModel.js";
-import CreateProduct from "./CreateProduct.jsx";
-import UpdateProduct from "./UpdateProduct.jsx";
+import RealTimeChart from "./Grafica.jsx";
 
 const Products = () => {
   const { products, loading, deleteProduct, editProduct, addProduct, productToEdit, loadProductToEdit, wsMessage } = useProductModel();
@@ -10,6 +9,7 @@ const Products = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [isNotificationModalOpen, setIsNotificationModalOpen] = useState(false); // Nuevo estado para la notificación modal
 
+  const data1 = [1,2,3,4,5,6,7,8,1,4]
   const deleteProductById = (id) => deleteProduct(id);
   const openEditModal = (product) => {
     setSelectedProduct(product);
@@ -27,11 +27,12 @@ const Products = () => {
     }
   }, [wsMessage]);
 
-  if (loading) {
-    return <p className="text-center text-xl text-gray-400">Cargando productos...</p>;
-  }
+  //if (loading) {
+   // return <p className="text-center text-xl text-gray-400">Cargando productos...</p>;
+  //}
 
-  return (
+  return <RealTimeChart data={data1} name="BPM" color="#4169E1"/>
+  /*return (
     <div className="max-w-5xl mx-auto p-6 bg-gray-900 shadow-lg rounded-lg text-gray-300">
       <h1 className="text-3xl font-bold text-white text-center mb-6">Lista de Productos</h1>
 
@@ -44,7 +45,7 @@ const Products = () => {
         </button>
       </div>
 
-      {/* Modales */}
+      {/* Modales }
       {isModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-md">
           <CreateProduct addProduct={addProduct} setIsModalOpen={setIsModalOpen} />
@@ -63,7 +64,7 @@ const Products = () => {
         </div>
       )}
 
-      {/* Modal de notificación de WebSocket */}
+      {/* Modal de notificación de WebSocket }
       {isNotificationModalOpen && (
         <div className="fixed inset-0 flex items-center justify-center bg-black/60 backdrop-blur-md">
           <div className="bg-black/65 p-6 rounded-lg shadow-lg text-center">
@@ -119,6 +120,6 @@ const Products = () => {
       </div>
     </div>
   );
+  */
 };
-
 export default Products;

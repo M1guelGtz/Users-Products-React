@@ -11,8 +11,7 @@ export const useProductModel = () => {
   useEffect(() => {
     fetchProducts();
 
-    // Establecer la conexión WebSocket cuando se monte el componente
-    const ws = new WebSocket("ws://localhost:3500/web_socket"); // URL de WebSocket de tu backend
+    const ws = new WebSocket("ws://18.208.8.74:3500/web_socket"); // URL de WebSocket de tu backend
     ws.onopen = () => {
       console.log("Conexión WebSocket establecida");
     };
